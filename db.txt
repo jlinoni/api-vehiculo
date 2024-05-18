@@ -1,0 +1,84 @@
+DROP DATABASE IF EXISTS bd_api_vehiculos;
+CREATE DATABASE bd_api_vehiculos CHARSET utf8mb4;
+USE bd_api_vehiculos;
+
+-- Tabla de vehículos
+CREATE TABLE vehiculo (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    conductor_id INT(11) NOT NULL,
+    marca VARCHAR(50) NOT NULL,
+    modelo VARCHAR(50) NOT NULL,
+    ano INT(4) NOT NULL,
+    placa VARCHAR(10) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (conductor_id) REFERENCES conductor(id)
+);
+
+-- Tabla de accidentes
+CREATE TABLE accidente (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    vehiculo_id INT(11) NOT NULL,
+    fecha DATE NOT NULL,
+    descripcion VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (vehiculo_id) REFERENCES vehiculo(id)
+);
+
+-- Tabla de robos
+CREATE TABLE robo (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    vehiculo_id INT(11) NOT NULL,
+    fecha DATE NOT NULL,
+    descripcion VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (vehiculo_id) REFERENCES vehiculo(id)
+);
+
+-- Tabla de papeletas
+CREATE TABLE papeleta (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    vehiculo_id INT(11) NOT NULL,
+    fecha DATE NOT NULL,
+    descripcion VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (vehiculo_id) REFERENCES vehiculo(id)
+);
+
+-- Tabla de deudas
+CREATE TABLE deuda (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    vehiculo_id INT(11) NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    descripcion VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (vehiculo_id) REFERENCES vehiculo(id)
+);
+
+-- Inserción de datos en la tabla vehiculo
+INSERT INTO vehiculo(conductor_id, marca, modelo, ano, placa) VALUES
+(1, 'Toyota', 'Corolla', 2018, 'ABC1234'),
+(1, 'Honda', 'Civic', 2019, 'XYZ5678'),
+(2, 'Chevrolet', 'Spark', 2016, 'DEF2345'),
+(3, 'Ford', 'Focus', 2017, 'LMN9012');
+
+-- Inserción de datos en la tabla accidente
+INSERT INTO accidente(vehiculo_id, fecha, descripcion) VALUES
+(1, '2022-03-15', 'Colisión leve en la intersección'),
+(1, '2023-05-20', 'Daños por inundación en el estacionamiento');
+
+-- Inserción de datos en la tabla robo
+INSERT INTO robo(vehiculo_id, fecha, descripcion) VALUES
+(2, '2021-08-10', 'Robo de espejos laterales'),
+(3, '2022-02-05', 'Robo total del vehículo en la calle');
+
+-- Inserción de datos en la tabla papeleta
+INSERT INTO papeleta(vehiculo_id, fecha, descripcion) VALUES
+(1, '2022-06-30', 'Papeleta por exceso de velocidad'),
+(2, '2023-10-15', 'Papeleta por estacionamiento indebido'),
+(3, '2021-12-20', 'Papeleta por no respetar la señal de alto');
+
+-- Inserción de datos en la tabla deuda
+INSERT INTO deuda(vehiculo_id, monto, descripcion) VALUES
+(1, 500.00, 'Multas de tráfico pendientes'),
+(3, 1000.00, 'Impuestos vehiculares atrasados');
+COMMIT;
